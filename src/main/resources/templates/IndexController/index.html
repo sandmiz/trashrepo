@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoMarket — O Mercado de Carros do Brasil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo">Auto<span>Market</span></a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Início</a></li>
+      <li><a href="busca">Buscar Carros</a></li>
+      <li><a href="#como-funciona">Como Funciona</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/login" class="btn-ghost" id="nav-login-btn">Entrar</a>
+      <a href="/cadastro-veiculo" class="btn-solid">Anunciar</a>
+    </div>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+  </div>
+  <div class="hero-content">
+    <h1>Encontre o carro <em>perfeito</em> para você</h1>
+    <p>Venda e anuncie com segurança.</p>
+    <div class="search-hero">
+      <div class="search-bar">
+        <div class="sb-group">
+          <label>Marca</label>
+          <select id="hero-marca">
+            <option value="">Todas</option>
+            <option>Volkswagen</option>
+            <option>Chevrolet</option>
+            <option>Fiat</option>
+            <option>Toyota</option>
+            <option>Honda</option>
+            <option>Hyundai</option>
+            <option>Jeep</option>
+            <option>Ford</option>
+            <option>BMW</option>
+            <option>Mercedes-Benz</option>
+          </select>
+        </div>
+        <div class="sb-group">
+          <label>Modelo</label>
+          <input type="text" id="hero-modelo" placeholder="Ex: Polo, Onix...">
+        </div>
+        <div class="sb-group">
+          <label>Preço até</label>
+          <select id="hero-preco">
+            <option value="">Qualquer</option>
+            <option value="30000">R$ 30.000</option>
+            <option value="50000">R$ 50.000</option>
+            <option value="80000">R$ 80.000</option>
+            <option value="120000">R$ 120.000</option>
+            <option value="200000">R$ 200.000</option>
+          </select>
+        </div>
+        <button class="btn-search" onclick="buscar()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- DESTAQUES -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Destaques do dia</h2>
+      <a href="busca" class="view-all">Ver todos →</a>
+    </div>
+    <div class="cars-grid" id="featured-cars">
+      <!-- Preenchido via JS -->
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="how-section" id="como-funciona">
+  <div class="container">
+    <h2 class="section-title centered">Como funciona</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>Pesquise</h3>
+        <p>Use nossos filtros avançados para encontrar exatamente o veículo que você procura.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>Compare</h3>
+        <p>Compare preços, fotos e especificações de diferentes anúncios lado a lado.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>Contate</h3>
+        <p>Entre em contato direto com o vendedor pelo chat integrado ou WhatsApp.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>Negocie</h3>
+        <p>Faça sua proposta com segurança e finalize a compra do seu novo carro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA ANUNCIAR -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-text">
+      <h2>Quer vender seu carro?</h2>
+      <p>Anuncie gratuitamente e alcance milhares de compradores em todo o Brasil.</p>
+    </div>
+    <a href="/cadastro-veiculo" class="btn-cta-large">Anunciar Agora — É Grátis</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="contato">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">Auto<span>Market</span></div>
+      <p>O maior marketplace de veículos do Brasil.</p>
+      <div class="social-links">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <h4>Veículos</h4>
+      <a href="busca">Carros Usados</a>
+      <a href="busca">Carros Novos</a>
+      <a href="busca">Motos</a>
+      <a href="busca">Caminhões</a>
+    </div>
+    <div class="footer-links">
+      <h4>Empresa</h4>
+      <a href="#">Sobre Nós</a>
+      <a href="#">Trabalhe Conosco</a>
+      <a href="#">Imprensa</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-links">
+      <h4>Suporte</h4>
+      <a href="#">Central de Ajuda</a>
+      <a href="#">Fale Conosco</a>
+      <a href="#">Termos de Uso</a>
+      <a href="#">Privacidade</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 AutoMarket. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

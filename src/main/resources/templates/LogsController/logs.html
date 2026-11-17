@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logs de Auditoria — AutoMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo">Auto<span>Market</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/busca">Buscar Carros</a></li>
+      <li><a href="/logs" class="active">Auditoria</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/perfil" class="btn-ghost">Meu Perfil</a>
+      <a href="/login" class="btn-solid">Sair</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">Início</a> / <span>Logs de Auditoria</span></div>
+    <h1>Registro de Logs para Auditoria</h1>
+    <p>Histórico de ações realizadas no sistema (cadastros, pedidos, aprovações e alterações de perfil).</p>
+  </div>
+</header>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="user-avatar">A</div>
+      <div class="sidebar-user-info">
+        <strong id="user-name">Admin</strong>
+        <span id="user-role">Auditoria</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/cadastro-veiculo"><span class="icon">🚗</span> Cadastrar Veículo</a>
+      <a href="/pedido-compra"><span class="icon">🛒</span> Pedidos de Compra</a>
+      <a href="/admin-pedidos"><span class="icon">✅</span> Aprovar Pedidos</a>
+      <a href="/perfil"><span class="icon">👤</span> Meu Perfil</a>
+      <a href="/logs" class="active"><span class="icon">📋</span> Logs de Auditoria</a>
+    </nav>
+  </aside>
+
+  <main class="main-panel">
+    <h2>Histórico de Ações</h2>
+    <p class="panel-sub">Todos os eventos relevantes são registrados automaticamente.</p>
+
+    <div class="filter-bar">
+      <select id="filtro-acao" onchange="renderLogs()">
+        <option value="">Todas as ações</option>
+        <option value="CADASTRO_VEICULO">Cadastro de veículo</option>
+        <option value="PEDIDO_COMPRA">Pedido de compra</option>
+        <option value="APROVAR_PEDIDO">Aprovar pedido</option>
+        <option value="REJEITAR_PEDIDO">Rejeitar pedido</option>
+        <option value="ATUALIZAR_PERFIL">Atualizar perfil</option>
+        <option value="LOGIN">Login</option>
+      </select>
+      <input type="text" id="busca-log" class="form-input" style="max-width:240px" placeholder="Buscar por usuário ou detalhe..." oninput="renderLogs()">
+      <button class="btn-secondary" onclick="exportarLogs()" style="margin-left:auto">Exportar JSON</button>
+      <button class="btn-outline" onclick="limparLogs()">Limpar logs</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>Usuário</th>
+            <th>Ação</th>
+            <th>Detalhes</th>
+            <th>IP / Origem</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-logs">
+        </tbody>
+      </table>
+    </div>
+    <div id="empty-logs" class="empty-state" style="display:none">
+      <div class="icon">📋</div>
+      <h3>Nenhum log encontrado</h3>
+      <p>Realize ações no sistema para gerar registros de auditoria.</p>
+    </div>
+  </main>
+</div>
+
+<script src="/js/app-store.js"></script>
+<script src="/js/logs.js"></script>
+</body>
+</html>

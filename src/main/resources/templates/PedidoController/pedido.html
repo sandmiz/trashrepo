@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedido de Compra — AutoMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo">Auto<span>Market</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/busca">Buscar Carros</a></li>
+      <li><a href="/pedido-compra" class="active">Meus Pedidos</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/perfil" class="btn-ghost">Meu Perfil</a>
+      <a href="/login" class="btn-solid">Sair</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">Início</a> / <span>Pedido de Compra</span></div>
+    <h1>Pedido de Compra</h1>
+    <p>Solicite a compra de um veículo ou acompanhe seus pedidos.</p>
+  </div>
+</header>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="user-avatar">U</div>
+      <div class="sidebar-user-info">
+        <strong id="user-name">Usuário</strong>
+        <span id="user-role">Cliente</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/cadastro-veiculo"><span class="icon">🚗</span> Cadastrar Veículo</a>
+      <a href="/pedido-compra" class="active"><span class="icon">🛒</span> Pedidos de Compra</a>
+      <a href="/admin-pedidos"><span class="icon">✅</span> Aprovar Pedidos</a>
+      <a href="/perfil"><span class="icon">👤</span> Meu Perfil</a>
+      <a href="/logs"><span class="icon">📋</span> Logs de Auditoria</a>
+    </nav>
+  </aside>
+
+  <main class="main-panel">
+    <h2>Novo Pedido de Compra</h2>
+    <p class="panel-sub">Selecione o veículo e envie sua proposta. O vendedor poderá aprovar ou rejeitar.</p>
+
+    <div id="alert" class="alert"></div>
+
+    <form id="form-pedido" onsubmit="return enviarPedido(event)">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="veiculo-id">Veículo *</label>
+          <select id="veiculo-id" class="form-select" required onchange="atualizarPreco()">
+            <option value="">Selecione um veículo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="valor-proposta">Valor da proposta (R$) *</label>
+          <input type="number" id="valor-proposta" class="form-input" min="1000" step="100" required>
+        </div>
+        <div class="form-group">
+          <label for="forma-pagamento">Forma de pagamento *</label>
+          <select id="forma-pagamento" class="form-select" required>
+            <option value="">Selecione</option>
+            <option value="avista">À vista</option>
+            <option value="financiamento">Financiamento</option>
+            <option value="consorcio">Consórcio</option>
+            <option value="permuta">Permuta + dinheiro</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="mensagem">Mensagem ao vendedor</label>
+          <textarea id="mensagem" class="form-textarea" placeholder="Ex: Tenho interesse, posso visitar o veículo amanhã..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Enviar Pedido</button>
+        <button type="button" class="btn-secondary" onclick="document.getElementById('form-pedido').reset()">Limpar</button>
+      </div>
+    </form>
+
+    <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border-light);">
+
+    <h2>Meus Pedidos</h2>
+    <p class="panel-sub">Acompanhe o status das suas solicitações.</p>
+
+    <div class="filter-bar">
+      <select id="filtro-status" onchange="renderMeusPedidos()">
+        <option value="">Todos os status</option>
+        <option value="pendente">Pendente</option>
+        <option value="aprovado">Aprovado</option>
+        <option value="rejeitado">Rejeitado</option>
+      </select>
+    </div>
+
+    <div id="lista-pedidos" class="card-list"></div>
+  </main>
+</div>
+
+<script src="/js/app-store.js"></script>
+<script src="/js/pedido-compra.js"></script>
+</body>
+</html>

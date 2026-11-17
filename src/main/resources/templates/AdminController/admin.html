@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprovar Pedidos — AutoMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo">Auto<span>Market</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/busca">Buscar Carros</a></li>
+      <li><a href="/admin-pedidos" class="active">Aprovar Pedidos</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/perfil" class="btn-ghost">Meu Perfil</a>
+      <a href="/login" class="btn-solid">Sair</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">Início</a> / <span>Aprovar / Rejeitar Pedidos</span></div>
+    <h1>Aprovar ou Rejeitar Pedidos</h1>
+    <p>Área do vendedor/admin para gerenciar solicitações de compra.</p>
+  </div>
+</header>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="user-avatar">A</div>
+      <div class="sidebar-user-info">
+        <strong id="user-name">Admin</strong>
+        <span id="user-role">Vendedor / Admin</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/cadastro-veiculo"><span class="icon">🚗</span> Cadastrar Veículo</a>
+      <a href="/pedido-compra"><span class="icon">🛒</span> Pedidos de Compra</a>
+      <a href="/admin-pedidos" class="active"><span class="icon">✅</span> Aprovar Pedidos</a>
+      <a href="/perfil"><span class="icon">👤</span> Meu Perfil</a>
+      <a href="/logs"><span class="icon">📋</span> Logs de Auditoria</a>
+    </nav>
+  </aside>
+
+  <main class="main-panel">
+    <h2>Pedidos Recebidos</h2>
+    <p class="panel-sub">Analise e decida sobre cada proposta de compra.</p>
+
+    <div id="alert" class="alert"></div>
+
+    <div class="stats-row" id="stats-row">
+      <div class="stat-box"><div class="num" id="stat-pendente">0</div><div class="lbl">Pendentes</div></div>
+      <div class="stat-box"><div class="num" id="stat-aprovado">0</div><div class="lbl">Aprovados</div></div>
+      <div class="stat-box"><div class="num" id="stat-rejeitado">0</div><div class="lbl">Rejeitados</div></div>
+      <div class="stat-box"><div class="num" id="stat-total">0</div><div class="lbl">Total</div></div>
+    </div>
+
+    <div class="filter-bar">
+      <select id="filtro-status" onchange="renderPedidosAdminLocal()">
+        <option value="">Todos</option>
+        <option value="pendente" selected>Pendentes</option>
+        <option value="aprovado">Aprovados</option>
+        <option value="rejeitado">Rejeitados</option>
+      </select>
+      <input type="text" id="busca-pedido" class="form-input" style="max-width:220px" placeholder="Buscar por cliente ou veículo..." oninput="renderPedidosAdminLocal()">
+    </div>
+
+    <div id="lista-admin" class="card-list"></div>
+  </main>
+</div>
+
+<!-- Modal de rejeição -->
+<div class="modal-overlay" id="modal-rejeitar">
+  <div class="modal">
+    <h3>Rejeitar pedido</h3>
+    <p>Informe o motivo da rejeição (opcional, mas recomendado).</p>
+    <div class="form-group">
+      <textarea id="motivo-rejeicao" class="form-textarea" placeholder="Ex: Valor abaixo do esperado, veículo já reservado..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-danger" onclick="confirmarRejeicao()">Rejeitar</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/app-store.js"></script>
+<script src="/js/admin-pedidos.js"></script>
+</body>
+</html>

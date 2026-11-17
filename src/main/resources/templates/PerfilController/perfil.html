@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuração de Perfil — AutoMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo">Auto<span>Market</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/busca">Buscar Carros</a></li>
+      <li><a href="/perfil" class="active">Perfil</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/perfil" class="btn-ghost">Meu Perfil</a>
+      <a href="/login" class="btn-solid">Sair</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">Início</a> / <span>Configuração de Perfil</span></div>
+    <h1>Configuração de Perfil</h1>
+    <p>Atualize seus dados pessoais e preferências de conta.</p>
+  </div>
+</header>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="user-avatar">U</div>
+      <div class="sidebar-user-info">
+        <strong id="user-name">Usuário</strong>
+        <span id="user-role">Cliente</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/cadastro-veiculo"><span class="icon">🚗</span> Cadastrar Veículo</a>
+      <a href="/pedido-compra"><span class="icon">🛒</span> Pedidos de Compra</a>
+      <a href="/admin-pedidos"><span class="icon">✅</span> Aprovar Pedidos</a>
+      <a href="/perfil" class="active"><span class="icon">👤</span> Meu Perfil</a>
+      <a href="/logs"><span class="icon">📋</span> Logs de Auditoria</a>
+    </nav>
+  </aside>
+
+  <main class="main-panel">
+    <h2>Dados Pessoais</h2>
+    <p class="panel-sub">Mantenha suas informações atualizadas para facilitar o contato.</p>
+
+    <div id="alert" class="alert"></div>
+
+    <form id="form-perfil" onsubmit="return salvarPerfil(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nome">Nome completo *</label>
+          <input type="text" id="nome" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail *</label>
+          <input type="email" id="email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="telefone">Telefone *</label>
+          <input type="text" id="telefone" class="form-input" required oninput="maskPhone(this)">
+        </div>
+        <div class="form-group">
+          <label for="cpf">CPF</label>
+          <input type="text" id="cpf" class="form-input" placeholder="000.000.000-00" oninput="maskCpf(this)">
+        </div>
+        <div class="form-group">
+          <label for="cidade">Cidade</label>
+          <input type="text" id="cidade" class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="estado">Estado</label>
+          <select id="estado" class="form-select">
+            <option value="">UF</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option>SP</option><option>SE</option><option>TO</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="tipo">Tipo de conta</label>
+          <select id="tipo" class="form-select">
+            <option value="cliente">Cliente</option>
+            <option value="vendedor">Vendedor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="bio">Sobre você</label>
+          <textarea id="bio" class="form-textarea" placeholder="Breve descrição (opcional)"></textarea>
+        </div>
+      </div>
+
+      <hr style="margin: 28px 0; border: none; border-top: 1px solid var(--border-light);">
+
+      <h2 style="font-size:1.15rem; margin-bottom:16px;">Alterar Senha</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="senha-atual">Senha atual</label>
+          <input type="password" id="senha-atual" class="form-input" placeholder="Deixe em branco para não alterar">
+        </div>
+        <div class="form-group">
+          <label for="senha-nova">Nova senha</label>
+          <input type="password" id="senha-nova" class="form-input" placeholder="Mínimo 6 caracteres">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Salvar Alterações</button>
+        <button type="button" class="btn-secondary" onclick="carregarPerfil()">Cancelar</button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script src="/js/app-store.js"></script>
+<script src="/js/perfil.js"></script>
+</body>
+</html>

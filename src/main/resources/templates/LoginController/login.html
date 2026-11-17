@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar — AutoMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-layout">
+  <!-- Painel esquerdo decorativo -->
+  <div class="auth-panel">
+    <a href="/" class="logo logo-white">Auto<span>Market</span></a>
+    <div class="auth-panel-content">
+      <h2>O maior mercado de carros do Brasil</h2>
+      <p>Milhares de veículos esperando por você. Compre ou venda com total segurança.</p>
+      <ul class="auth-features">
+        <li>✓ Mais de 48.000 veículos anunciados</li>
+        <li>✓ Chat integrado com vendedores</li>
+        <li>✓ Histórico de preços do mercado</li>
+        <li>✓ Proteção anti-fraude</li>
+      </ul>
+    </div>
+    <div class="auth-panel-deco">
+      <div class="deco-circle c1"></div>
+      <div class="deco-circle c2"></div>
+      <div class="deco-circle c3"></div>
+    </div>
+  </div>
+
+  <!-- Formulário -->
+  <div class="auth-form-area">
+    <a href="/" class="back-link">← Voltar ao início</a>
+
+    <div class="auth-form-card" id="login-card">
+      <div class="form-tabs">
+        <button class="ftab active" onclick="showTab('login')">Entrar</button>
+        <button class="ftab" onclick="showTab('cadastro')">Cadastrar</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="tab-content" id="tab-login">
+        <h2>Bem-vindo de volta!</h2>
+        <p class="form-sub">Entre com sua conta para acessar seus favoritos e anúncios.</p>
+
+        <div class="form-group" id="lg-error-box" style="display:none">
+          <div class="error-msg" id="lg-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="lg-email" placeholder="seu@email.com" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-pw">
+            <input type="password" id="lg-senha" placeholder="Sua senha" class="form-input">
+            <button type="button" class="toggle-pw" onclick="togglePw('lg-senha', this)">👁</button>
+          </div>
+        </div>
+        <div class="form-row-space">
+          <label class="check-label">
+            <input type="checkbox" id="lg-lembrar">
+            <span>Lembrar de mim</span>
+          </label>
+          <a href="#" class="link-sm">Esqueci minha senha</a>
+        </div>
+        <button class="btn-submit" onclick="fazerLogin()">Entrar</button>
+      </div>
+
+      <!-- CADASTRO -->
+      <div class="tab-content hidden" id="tab-cadastro">
+        <h2>Criar conta gratuita</h2>
+        <p class="form-sub">Junte-se a mais de 500 mil usuários no AutoMarket.</p>
+
+        <div class="form-group" id="cd-error-box" style="display:none">
+          <div class="error-msg" id="cd-error"></div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="cd-nome" placeholder="Seu nome" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Sobrenome</label>
+            <input type="text" id="cd-sobrenome" placeholder="Sobrenome" class="form-input">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="cd-email" placeholder="seu@email.com" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="tel" id="cd-tel" placeholder="(00) 00000-0000" class="form-input" oninput="maskPhone(this)">
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-pw">
+            <input type="password" id="cd-senha" placeholder="Mínimo 6 caracteres" class="form-input" oninput="checkSenha()">
+            <button type="button" class="toggle-pw" onclick="togglePw('cd-senha', this)">👁</button>
+          </div>
+          <div class="password-strength" id="pw-strength"></div>
+        </div>
+        <div class="form-group">
+          <label class="check-label">
+            <input type="checkbox" id="cd-termos">
+            <span>Aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a></span>
+          </label>
+        </div>
+        <button class="btn-submit" onclick="fazerCadastro()">Criar Conta</button>
+      </div>
+    </div>
+
+    <!-- Sucesso -->
+    <div class="auth-success hidden" id="success-card">
+      <div class="success-icon">🎉</div>
+      <h2 id="success-msg">Bem-vindo ao AutoMarket!</h2>
+      <p id="success-sub">Login realizado com sucesso. Redirecionando...</p>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>
