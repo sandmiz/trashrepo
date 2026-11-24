@@ -85,25 +85,6 @@ function fazerLogin() {
         shakeCard();
         return;
       }
-      const session = {
-        id: data.id,
-        nome: data.nome,
-        sobrenome: data.sobrenome,
-        email: data.email,
-        telefone: data.telefone,
-        cpf: data.cpf,
-        cidade: data.cidade,
-        estado: data.estado,
-        tipo: data.tipo,
-        bio: data.bio
-      };
-      localStorage.setItem('automarket_session', JSON.stringify(session));
-      if (lembrar) localStorage.setItem('automarket_remember', 'true');
-      else localStorage.removeItem('automarket_remember');
-      // perfil no app-store
-      try {
-        localStorage.setItem('am_perfil', JSON.stringify(session));
-      } catch {}
       mostrarSucesso(`Bem-vindo, ${data.nome}!`, 'Login realizado com sucesso. Redirecionando...');
     })
     .catch((err) => {
@@ -147,17 +128,6 @@ function fazerCadastro() {
         if (errorBox) errorBox.style.display = 'block';
         return;
       }
-      const session = {
-        id: data.id,
-        nome: data.nome,
-        sobrenome: data.sobrenome,
-        email: data.email,
-        tipo: data.tipo || 'cliente'
-      };
-      localStorage.setItem('automarket_session', JSON.stringify(session));
-      try {
-        localStorage.setItem('am_perfil', JSON.stringify(session));
-      } catch {}
       mostrarSucesso(`Conta criada, ${nome}!`, 'Cadastro realizado no banco de dados. Bem-vindo!');
     })
     .catch((err) => {

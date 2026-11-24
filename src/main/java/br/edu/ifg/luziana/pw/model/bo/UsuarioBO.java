@@ -4,10 +4,14 @@ import br.edu.ifg.luziana.pw.model.CadastroDTO;
 import br.edu.ifg.luziana.pw.model.LoginDTO;
 import br.edu.ifg.luziana.pw.model.dao.UsuarioDAO;
 import br.edu.ifg.luziana.pw.model.entity.Usuario;
+import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
+
+import java.time.ZonedDateTime;
 
 /**
  * Regras de negócio relacionadas a usuário (login e cadastro).
@@ -99,7 +103,24 @@ public class UsuarioBO {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("E-mail ou senha inválidos.").build();
         }
-        return Response.ok(u).build();
+
+        String token = Jwt
+                .issuer("http://localhost/issuer")
+                .upn(u.getEmail())
+                .groups(u.getTipo())
+                .claim("nome", u.getNome())
+                .claim("data", ZonedDateTime.now().toString())
+                .sign();
+
+        NewCookie cookie = new NewCookie.Builder("jwt")
+                .value(token)
+                .path("/")
+                .maxAge(3600)
+                .secure(false)
+                .httpOnly(true)
+                .build();
+
+        return Response.ok(u).header("Set-Cookie", cookie).build();
     }
 
     @Transactional
@@ -124,6 +145,23 @@ public class UsuarioBO {
         }
         entity.setTipo(tipo);
         usuarioDAO.insert(entity);
-        return Response.status(Response.Status.CREATED).entity(entity).build();
+
+        String token = Jwt
+                .issuer("http://localhost/issuer")
+                .upn(entity.getEmail())
+                .groups(entity.getTipo())
+                .claim("nome", entity.getNome())
+                .claim("data", ZonedDateTime.now().toString())
+                .sign();
+
+        NewCookie cookie = new NewCookie.Builder("jwt")
+                .value(token)
+                .path("/")
+                .maxAge(3600)
+                .secure(false)
+                .httpOnly(true)
+                .build();
+
+        return Response.status(Response.Status.CREATED).entity(entity).header("Set-Cookie", cookie).build();
     }
 }

@@ -4,6 +4,7 @@ import br.edu.ifg.luziana.pw.model.LogDTO;
 import br.edu.ifg.luziana.pw.model.bo.LogBO;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -26,16 +27,11 @@ public class LogsController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @RolesAllowed({ "Admin" })
     public TemplateInstance logs() {
         return Templates.logs();
     }
 
-    @POST
-    @Path("/registrar")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response registrar(LogDTO dto) {
-        return logBO.registrar(dto);
-    }
 
     @GET
     @Path("/listar")

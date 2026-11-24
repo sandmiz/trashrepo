@@ -80,7 +80,6 @@ function salvarPerfil(e) {
       }
       sincronizarSessao(data);
       preencherPerfil(data);
-      registrarLog('ATUALIZAR_PERFIL', `Perfil atualizado: ${data.nome} (${data.email}) — tipo: ${data.tipo}`);
       showAlert('Perfil atualizado com sucesso!');
       atualizarSidebar();
     })

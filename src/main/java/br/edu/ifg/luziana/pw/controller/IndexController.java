@@ -2,6 +2,7 @@ package br.edu.ifg.luziana.pw.controller;
 
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -17,6 +18,7 @@ public class IndexController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @PermitAll
     public TemplateInstance index() {
         return Templates.index();
     }

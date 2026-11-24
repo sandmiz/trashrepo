@@ -8,6 +8,7 @@ import br.edu.ifg.luziana.pw.model.bo.UsuarioBO;
 import br.edu.ifg.luziana.pw.model.entity.Usuario;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -35,6 +36,7 @@ public class LoginController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @PermitAll
     public TemplateInstance login() {
         return Templates.login();
     }
@@ -42,6 +44,7 @@ public class LoginController {
     @POST
     @Path("/entrar")
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public Response entrar(LoginDTO dto) {
         Response resp = usuarioBO.autenticar(dto);
         if (resp.getStatus() == 200) {
@@ -76,6 +79,7 @@ public class LoginController {
     @POST
     @Path("/cadastrar")
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public Response cadastrar(CadastroDTO dto) {
         Response resp = usuarioBO.cadastrar(dto);
         if (resp.getStatus() == 201) {

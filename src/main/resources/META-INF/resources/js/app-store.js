@@ -85,23 +85,6 @@ function exigirLogin() {
   return null;
 }
 
-function registrarLog(acao, detalhes) {
-  const user = getUsuarioAtual();
-  const body = {
-    acao,
-    detalhes: typeof detalhes === 'string' ? detalhes : JSON.stringify(detalhes),
-    usuario: user.nome || user.email || 'Anônimo',
-    email: user.email || '',
-    origem: 'web'
-  };
-  // grava no PostgreSQL
-  fetch('/logs/registrar', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  }).catch(() => {});
-}
-
 function formatMoney(v) {
   return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }

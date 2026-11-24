@@ -6,6 +6,7 @@ import br.edu.ifg.luziana.pw.model.bo.LogBO;
 import br.edu.ifg.luziana.pw.model.bo.PedidoBO;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -33,6 +34,7 @@ public class AdminController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @RolesAllowed({ "Admin" })
     public TemplateInstance admin() {
         return Templates.admin();
     }
@@ -40,6 +42,7 @@ public class AdminController {
     @POST
     @Path("/atualizar-status")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "Admin" })
     public Response atualizarStatus(PedidoDTO dto,
                                     @QueryParam("adminNome") String adminNome,
                                     @QueryParam("adminEmail") String adminEmail,
@@ -73,6 +76,7 @@ public class AdminController {
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "Admin" })
     public Response listar() {
         return pedidoBO.listar();
     }

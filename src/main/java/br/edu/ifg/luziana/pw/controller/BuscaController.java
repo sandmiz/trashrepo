@@ -4,6 +4,7 @@ import br.edu.ifg.luziana.pw.model.VeiculoDTO;
 import br.edu.ifg.luziana.pw.model.bo.VeiculoBO;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -27,6 +28,7 @@ public class BuscaController {
     @GET
     @Path("/busca")
     @Produces(MediaType.TEXT_HTML)
+    @PermitAll
     public TemplateInstance busca() {
         return Templates.busca();
     }
@@ -34,6 +36,7 @@ public class BuscaController {
     @POST
     @Path("/buscar")
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public Response buscar(VeiculoDTO dto) {
         String marca = dto != null ? dto.getMarca() : null;
         String modelo = dto != null ? dto.getModelo() : null;
@@ -46,6 +49,7 @@ public class BuscaController {
     @GET
     @Path("/api/veiculos")
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public Response listarVeiculos(
             @QueryParam("marca") String marca,
             @QueryParam("modelo") String modelo,
