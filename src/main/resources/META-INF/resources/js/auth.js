@@ -85,7 +85,7 @@ function fazerLogin() {
         shakeCard();
         return;
       }
-      mostrarSucesso(`Bem-vindo, ${data.nome}!`, 'Login realizado com sucesso. Redirecionando...');
+      mostrarSucesso(`Bem-vindo!`, 'Login realizado com sucesso. Redirecionando...');
     })
     .catch((err) => {
       console.error(err);
@@ -172,11 +172,15 @@ const style = document.createElement('style');
 style.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }`;
 document.head.appendChild(style);
 
-const sessionAtual = getUsuarioLogado();
-if (sessionAtual) {
-  const redirectMsg = document.createElement('div');
-  redirectMsg.style.cssText = 'position:fixed;top:20px;right:20px;background:#16A34A;color:white;padding:12px 20px;border-radius:12px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.2)';
-  redirectMsg.textContent = `✓ Você já está logado como ${sessionAtual.nome}`;
-  document.body.appendChild(redirectMsg);
-  setTimeout(() => redirectMsg.remove(), 3000);
-}
+console.log(getPerfil)
+
+getPerfil().then((sessionAtual) => {
+  if (sessionAtual) {
+    const redirectMsg = document.createElement('div');
+    redirectMsg.style.cssText = 'position:fixed;top:20px;right:20px;background:#16A34A;color:white;padding:12px 20px;border-radius:12px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.2)';
+    redirectMsg.textContent = `✓ Você já está logado como ${sessionAtual.nome}`;
+    document.body.appendChild(redirectMsg);
+    setTimeout(() => redirectMsg.remove(), 3000);
+  }
+});
+

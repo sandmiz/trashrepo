@@ -116,10 +116,10 @@ function renderPedidosAdmin() {
     });
 }
 
-function atualizarStatusPedido(id, status, motivo) {
+async function atualizarStatusPedido(id, status, motivo) {
   let adminNome = 'Admin';
   let adminEmail = '';
-  const s = getUsuarioLogado();
+  const s = await getPerfil();
   if (s) {
     adminNome = [s.nome, s.sobrenome].filter(Boolean).join(' ') || 'Admin';
     adminEmail = s.email || '';

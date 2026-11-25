@@ -8,6 +8,8 @@ import br.edu.ifg.luziana.pw.model.dao.UsuarioDAO;
 import br.edu.ifg.luziana.pw.model.entity.Usuario;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -22,9 +24,6 @@ public class PedidoController {
 
     @Inject
     PedidoBO pedidoBO;
-
-    @Inject
-    LogBO logBO;
 
     @Inject
     UsuarioDAO usuarioDAO;
@@ -43,36 +42,16 @@ public class PedidoController {
     @POST
     @Path("/enviar")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response enviar(PedidoDTO dto, @QueryParam("usuarioId") Integer usuarioId) {
-        Response resp = pedidoBO.enviar(dto, usuarioId);
-        if (resp.getStatus() == 201) {
-            try {
-                String nome = null;
-                String email = null;
-                if (usuarioId != null) {
-                    Usuario u = usuarioDAO.findById(usuarioId);
-                    if (u != null) {
-                        nome = u.getNome() + (u.getSobrenome() != null ? " " + u.getSobrenome() : "");
-                        email = u.getEmail();
-                    }
-                }
-                LogDTO log = new LogDTO("PEDIDO_COMPRA",
-                        "Enviou proposta para veículo id=" + dto.getVeiculoId(),
-                        nome, email, "web");
-                logBO.registrar(log);
-            } catch (Exception ignored) {
-            }
-        }
-        return resp;
+    @Authenticated
+    public Response enviar(PedidoDTO dto) {
+        return pedidoBO.enviar(dto);
     }
 
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listar(@QueryParam("usuarioId") Integer usuarioId) {
-        if (usuarioId != null) {
-            return pedidoBO.listarPorUsuario(usuarioId);
-        }
+    @Authenticated
+    public Response listar() {
         return pedidoBO.listar();
     }
 }

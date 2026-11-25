@@ -7,14 +7,18 @@ import br.edu.ifg.luziana.pw.model.entity.Usuario;
 import br.edu.ifg.luziana.pw.model.entity.Veiculo;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.json.JsonNumber;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RequestScoped
 public class VeiculoBO {
+    @Inject
+    JsonWebToken jwt;
 
     @Inject
     VeiculoDAO veiculoDAO;
@@ -52,7 +56,7 @@ public class VeiculoBO {
     }
 
     @Transactional
-    public Response salvar(VeiculoDTO dto, Integer usuarioId) {
+    public Response salvar(VeiculoDTO dto) {
         String erro = mensagemErroCadastro(dto);
         if (erro != null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(erro).build();
@@ -73,10 +77,8 @@ public class VeiculoBO {
         entity.setDescricao(dto.getDescricao());
         entity.setTelefone(dto.getTelefone());
         entity.setCriadoEm(LocalDateTime.now());
-        if (usuarioId != null) {
-            Usuario u = usuarioDAO.findById(usuarioId);
-            entity.setUsuario(u);
-        }
+        Usuario u = usuarioDAO.findById(((JsonNumber) jwt.getClaim("id")).intValue());
+        entity.setUsuario(u);
         veiculoDAO.insert(entity);
         return Response.status(Response.Status.CREATED).entity(entity).build();
     }

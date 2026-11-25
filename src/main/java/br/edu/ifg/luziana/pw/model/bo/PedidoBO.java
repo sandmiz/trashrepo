@@ -1,5 +1,6 @@
 package br.edu.ifg.luziana.pw.model.bo;
 
+import br.edu.ifg.luziana.pw.model.LogDTO;
 import br.edu.ifg.luziana.pw.model.PedidoDTO;
 import br.edu.ifg.luziana.pw.model.dao.PedidoDAO;
 import br.edu.ifg.luziana.pw.model.dao.UsuarioDAO;
@@ -9,8 +10,10 @@ import br.edu.ifg.luziana.pw.model.entity.Usuario;
 import br.edu.ifg.luziana.pw.model.entity.Veiculo;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.json.JsonNumber;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +33,12 @@ public class PedidoBO {
 
     @Inject
     UsuarioDAO usuarioDAO;
+
+    @Inject
+    LogBO logBO;
+
+    @Inject
+    JsonWebToken jwt;
 
     public boolean validarEnvio(PedidoDTO dto) {
         if (dto == null) return false;
@@ -66,7 +75,7 @@ public class PedidoBO {
     }
 
     @Transactional
-    public Response enviar(PedidoDTO dto, Integer usuarioId) {
+    public Response enviar(PedidoDTO dto) {
         String erro = mensagemErroEnvio(dto);
         if (erro != null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(erro).build();
@@ -82,14 +91,18 @@ public class PedidoBO {
         entity.setMensagem(dto.getMensagem());
         entity.setStatus(STATUS_PENDENTE);
         entity.setCriadoEm(LocalDateTime.now());
-        if (usuarioId != null) {
-            Usuario u = usuarioDAO.findById(usuarioId);
-            if (u == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Usuário não encontrado.").build();
-            }
-            entity.setUsuario(u);
+        Usuario u = usuarioDAO.findById(((JsonNumber) jwt.getClaim("id")).intValue());
+        if (u == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Usuário não encontrado.").build();
         }
+        entity.setUsuario(u);
+
         pedidoDAO.insert(entity);
+
+        LogDTO log = new LogDTO("PEDIDO_COMPRA",
+                "Enviou proposta para veículo id=" + dto.getVeiculoId(),
+                u.getNome(), u.getEmail(), "web");
+        logBO.registrar(log);
         return Response.status(Response.Status.CREATED).entity(entity).build();
     }
 
@@ -113,13 +126,7 @@ public class PedidoBO {
 
     @Transactional
     public Response listar() {
-        List<Pedido> lista = pedidoDAO.listarTodos();
-        return Response.ok(lista).build();
-    }
-
-    @Transactional
-    public Response listarPorUsuario(Integer usuarioId) {
-        List<Pedido> lista = pedidoDAO.listarPorUsuario(usuarioId);
+        List<Pedido> lista = pedidoDAO.listarPorUsuario(((JsonNumber) jwt.getClaim("id")).intValue());
         return Response.ok(lista).build();
     }
 

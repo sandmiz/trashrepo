@@ -5,11 +5,15 @@ import br.edu.ifg.luziana.pw.model.dao.UsuarioDAO;
 import br.edu.ifg.luziana.pw.model.entity.Usuario;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.json.JsonNumber;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @RequestScoped
 public class PerfilBO {
+    @Inject
+    JsonWebToken jwt;
 
     @Inject
     UsuarioDAO usuarioDAO;
@@ -93,5 +97,16 @@ public class PerfilBO {
             return Response.status(Response.Status.NOT_FOUND).entity("Usuário não encontrado.").build();
         }
         return Response.ok(entity).build();
+    }
+
+    public Response info() {
+        Usuario u = usuarioDAO.findById(((JsonNumber) jwt.getClaim("id")).intValue());
+
+        if (u == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("Usuário inválido.").build();
+        }
+
+        return Response.ok(u).build();
     }
 }

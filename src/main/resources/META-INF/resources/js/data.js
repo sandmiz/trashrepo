@@ -75,8 +75,8 @@ const getUsuarioLogado = () => {
 };
 
 // Favoritos: guardados no navegador, uma lista por usuário logado
-function getFavoritos() {
-  const user = getUsuarioLogado();
+async function getFavoritos() {
+  const user = await getPerfil();
   if (!user || user.id == null) return [];
   try {
     return JSON.parse(localStorage.getItem(`am_favoritos_${user.id}`) || '[]');
@@ -85,8 +85,8 @@ function getFavoritos() {
   }
 }
 
-function salvarFavoritos(lista) {
-  const user = getUsuarioLogado();
+async function salvarFavoritos(lista) {
+  const user = await getPerfil();
   if (!user || user.id == null) return;
   localStorage.setItem(`am_favoritos_${user.id}`, JSON.stringify(lista));
 }

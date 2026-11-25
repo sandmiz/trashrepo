@@ -15,8 +15,8 @@ document.getElementById('hamburger')?.addEventListener('click', () => {
 });
 
 // Verificar se usuário está logado
-const atualizarNav = () => {
-  const user = getUsuarioLogado();
+const atualizarNav = async () => {
+  const user = await getPerfil();
   const loginBtn = document.getElementById('nav-login-btn');
   if (user && loginBtn) {
     loginBtn.textContent = `👤 ${user.nome}`;
@@ -60,9 +60,9 @@ const renderFeaturedCars = () => {
 
 const isFavorito = (id) => getFavoritos().includes(id);
 
-const toggleFavorito = (e, id) => {
+const toggleFavorito = async (e, id) => {
   e.stopPropagation();
-  const user = getUsuarioLogado();
+  const user = await getPerfil();
   if (!user) {
     window.location.href = 'login';
     return;

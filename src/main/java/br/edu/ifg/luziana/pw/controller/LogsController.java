@@ -27,7 +27,7 @@ public class LogsController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "admin" })
     public TemplateInstance logs() {
         return Templates.logs();
     }
@@ -36,6 +36,7 @@ public class LogsController {
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "admin" })
     public Response listar(@QueryParam("limite") Integer limite) {
         if (limite != null && limite > 0) {
             return logBO.listarRecentes(limite);

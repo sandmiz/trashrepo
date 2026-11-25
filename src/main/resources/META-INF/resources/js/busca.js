@@ -43,8 +43,8 @@ document.getElementById('hamburger')?.addEventListener('click', () => {
   document.querySelector('.nav-actions')?.classList.toggle('open');
 });
 
-function atualizarNavLogin() {
-  const user = getUsuarioLogado();
+async function atualizarNavLogin() {
+  const user = await getPerfil();
   const btn = document.getElementById('nav-login-btn');
   if (user && btn) {
     btn.textContent = `👤 ${user.nome}`;
@@ -133,7 +133,7 @@ function aplicarFiltros() {
   renderizar();
 }
 
-function renderizar() {
+async function renderizar() {
   const grid = document.getElementById('resultados-grid');
   const empty = document.getElementById('empty-state');
   const count = document.getElementById('result-count');
@@ -154,7 +154,7 @@ function renderizar() {
   empty.classList.add('hidden');
 
   grid.className = `cars-grid ${viewMode === 'list' ? 'list-view' : ''}`;
-  grid.innerHTML = pagina.map(car => criarCardHTML(car)).join('');
+  grid.innerHTML = (await Promise.all(pagina.map(async car => await criarCardHTML(car)))).join('');
 
   renderPaginacao(total);
 
@@ -170,8 +170,8 @@ function renderizar() {
   });
 }
 
-function criarCardHTML(car) {
-  const fav = isFavorito(car.id);
+async function criarCardHTML(car) {
+  const fav = await isFavorito(car.id);
   return `
     <div class="car-card" onclick="abrirModal(carrosDB.find(c=>c.id===${car.id}))">
       <div class="car-img">
@@ -247,7 +247,7 @@ function toggleFiltros() {
 }
 
 // MODAL
-function abrirModal(car) {
+async function abrirModal(car) {
   if (!car) return;
   const modal = document.getElementById('car-modal');
   const content = document.getElementById('modal-content');
@@ -261,8 +261,8 @@ function abrirModal(car) {
           <div class="modal-title">${car.marca} ${car.modelo}</div>
           <div style="color:var(--muted);font-size:.9rem">${car.versao}</div>
         </div>
-        <button class="fav-btn ${isFavorito(car.id) ? 'active' : ''}" style="position:static;width:44px;height:44px;" onclick="toggleFavorito(event,${car.id});this.textContent=isFavorito(${car.id})?'❤️':'🤍';this.className='fav-btn '+(isFavorito(${car.id})?'active':'')">
-          ${isFavorito(car.id) ? '❤️' : '🤍'}
+        <button class="fav-btn ${await isFavorito(car.id) ? 'active' : ''}" style="position:static;width:44px;height:44px;" onclick="toggleFavorito(event,${car.id});this.textContent=isFavorito(${car.id})?'❤️':'🤍';this.className='fav-btn '+(isFavorito(${car.id})?'active':'')">
+          ${await isFavorito(car.id) ? '❤️' : '🤍'}
         </button>
       </div>
       <div class="modal-price">${formatPreco(car.preco)}</div>
@@ -318,8 +318,8 @@ function contatoWhatsapp(id) {
   window.open(`https://wa.me/55${num}?text=${msg}`, '_blank');
 }
 
-function agendarVisita(id) {
-  const user = getUsuarioLogado();
+async function agendarVisita(id) {
+  const user = await getPerfil();
   if (!user) {
     if (confirm('Faça login para agendar uma visita. Ir para a página de login?')) {
       window.location.href = 'login';
@@ -341,16 +341,16 @@ function simularFinanciamento(preco) {
 }
 
 // Favoritos
-const isFavorito = (id) => getFavoritos().includes(id);
+const isFavorito = async (id) => (await getFavoritos()).includes(id);
 
-const toggleFavorito = (e, id) => {
+const toggleFavorito = async (e, id) => {
   e.stopPropagation();
-  const user = getUsuarioLogado();
+  const user = await getPerfil();
   if (!user) {
     if (confirm('Faça login para salvar favoritos. Ir para login?')) window.location.href = 'login';
     return;
   }
-  const favs = getFavoritos();
+  const favs = await getFavoritos();
   const idx = favs.indexOf(id);
   if (idx === -1) { favs.push(id); mostrarToast('❤️ Adicionado aos favoritos!'); }
   else { favs.splice(idx, 1); mostrarToast('💔 Removido dos favoritos.'); }

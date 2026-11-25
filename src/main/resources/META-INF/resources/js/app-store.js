@@ -23,10 +23,10 @@ function setStore(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-function getPerfil() {
+async function getPerfil() {
   try {
-    const p = localStorage.getItem(STORE_KEYS.perfil);
-    if (p) return JSON.parse(p);
+    return await fetch(`/perfil/info`)
+          .then((p) => p.json());
   } catch {}
   return {
     nome: 'Usuário Demo',
@@ -44,20 +44,6 @@ function setPerfil(perfil) {
   localStorage.setItem(STORE_KEYS.perfil, JSON.stringify(perfil));
 }
 
-// Sessão gravada no login (id, nome, e-mail, tipo). Antes só data.js definia isso, então as
-// páginas que carregam apenas app-store.js (pedido, cadastro de veículo...) enxergavam "sem login".
-function getUsuarioLogado() {
-  try {
-    const s = localStorage.getItem('automarket_session');
-    return s ? JSON.parse(s) : null;
-  } catch {
-    return null;
-  }
-}
-
-function getUsuarioAtual() {
-  return getUsuarioLogado() || getPerfil();
-}
 
 function escapeHtml(str) {
   return String(str == null ? '' : str)
@@ -76,8 +62,8 @@ function extrairErro(data, padrao) {
 }
 
 // Páginas que gravam dados precisam de usuário logado; senão manda para o login.
-function exigirLogin() {
-  const u = getUsuarioLogado();
+async function exigirLogin() {
+  const u = await getPerfil();
   if (u && u.id != null) return u;
   if (confirm('Faça login para continuar. Ir para a página de login?')) {
     window.location.href = '/login';
@@ -134,8 +120,8 @@ function showAlert(msg, type = 'success') {
   setTimeout(() => { el.style.display = 'none'; }, 4500);
 }
 
-function atualizarSidebar() {
-  const u = getUsuarioAtual();
+async function atualizarSidebar() {
+  const u = await getPerfil();
   const av = document.getElementById('user-avatar');
   const nm = document.getElementById('user-name');
   const rl = document.getElementById('user-role');

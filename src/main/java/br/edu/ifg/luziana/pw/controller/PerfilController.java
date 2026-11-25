@@ -4,6 +4,8 @@ import br.edu.ifg.luziana.pw.model.PerfilDTO;
 import br.edu.ifg.luziana.pw.model.bo.PerfilBO;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -28,6 +30,7 @@ public class PerfilController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @Authenticated
     public TemplateInstance perfil() {
         return Templates.perfil();
     }
@@ -35,6 +38,7 @@ public class PerfilController {
     @POST
     @Path("/salvar")
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response salvar(PerfilDTO dto, @QueryParam("usuarioId") Integer usuarioId) {
         if (usuarioId == null) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -46,6 +50,7 @@ public class PerfilController {
 
     @GET
     @Path("/buscar")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscar(@QueryParam("id") Integer id) {
         if (id == null) {
@@ -54,5 +59,13 @@ public class PerfilController {
                     .build();
         }
         return perfilBO.buscar(id);
+    }
+
+    @GET
+    @Path("/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
+    public Response info() {
+        return perfilBO.info();
     }
 }

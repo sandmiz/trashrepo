@@ -85,12 +85,12 @@ function enviarPedido(e) {
   return false;
 }
 
-function renderMeusPedidos() {
+async function renderMeusPedidos() {
   const container = document.getElementById('lista-pedidos');
   if (!container) return;
   const filtro = document.getElementById('filtro-status')?.value || '';
 
-  const user = getUsuarioLogado();
+  const user = await getPerfil();
   if (!user || user.id == null) {
     container.innerHTML = '<div class="empty-state"><h3>Faça login</h3><p>Entre na sua conta para ver seus pedidos.</p></div>';
     return;

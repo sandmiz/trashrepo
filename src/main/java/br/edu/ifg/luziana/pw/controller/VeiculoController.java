@@ -8,6 +8,9 @@ import br.edu.ifg.luziana.pw.model.dao.UsuarioDAO;
 import br.edu.ifg.luziana.pw.model.entity.Usuario;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -36,6 +39,7 @@ public class VeiculoController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @RolesAllowed({ "admin", "vendedor" })
     public TemplateInstance cadastro() {
         return Templates.cadastro();
     }
@@ -43,32 +47,15 @@ public class VeiculoController {
     @POST
     @Path("/salvar")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response salvar(VeiculoDTO dto, @QueryParam("usuarioId") Integer usuarioId) {
-        Response resp = veiculoBO.salvar(dto, usuarioId);
-        if (resp.getStatus() == 201) {
-            try {
-                String nome = null;
-                String email = null;
-                if (usuarioId != null) {
-                    Usuario u = usuarioDAO.findById(usuarioId);
-                    if (u != null) {
-                        nome = u.getNome() + (u.getSobrenome() != null ? " " + u.getSobrenome() : "");
-                        email = u.getEmail();
-                    }
-                }
-                LogDTO log = new LogDTO("CADASTRO_VEICULO",
-                        "Cadastrou " + dto.getMarca() + " " + dto.getModelo() + " " + dto.getAno(),
-                        nome, email, "web");
-                logBO.registrar(log);
-            } catch (Exception ignored) {
-            }
-        }
-        return resp;
+    @RolesAllowed({ "admin", "vendedor" })
+    public Response salvar(VeiculoDTO dto) {
+        return veiculoBO.salvar(dto);
     }
 
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public Response listar() {
         return veiculoBO.listar();
     }

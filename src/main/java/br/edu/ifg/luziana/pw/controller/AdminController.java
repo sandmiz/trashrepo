@@ -34,7 +34,7 @@ public class AdminController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "admin" })
     public TemplateInstance admin() {
         return Templates.admin();
     }
@@ -42,7 +42,7 @@ public class AdminController {
     @POST
     @Path("/atualizar-status")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "admin" })
     public Response atualizarStatus(PedidoDTO dto,
                                     @QueryParam("adminNome") String adminNome,
                                     @QueryParam("adminEmail") String adminEmail,
@@ -76,7 +76,7 @@ public class AdminController {
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "admin" })
     public Response listar() {
         return pedidoBO.listar();
     }

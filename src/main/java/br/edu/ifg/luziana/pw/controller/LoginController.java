@@ -46,34 +46,7 @@ public class LoginController {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response entrar(LoginDTO dto) {
-        Response resp = usuarioBO.autenticar(dto);
-        if (resp.getStatus() == 200) {
-            Usuario u = (Usuario) resp.getEntity();
-            try {
-                LogDTO log = new LogDTO("LOGIN", "Login realizado com sucesso",
-                        u.getNome() + " " + (u.getSobrenome() != null ? u.getSobrenome() : ""),
-                        u.getEmail(), "web");
-                logBO.registrar(log);
-            } catch (Exception ignored) {
-            }
-            Map<String, Object> body = new HashMap<>();
-            body.put("id", u.getId());
-            body.put("nome", u.getNome());
-            body.put("sobrenome", u.getSobrenome());
-            body.put("email", u.getEmail());
-            body.put("telefone", u.getTelefone());
-            body.put("cpf", u.getCpf());
-            body.put("cidade", u.getCidade());
-            body.put("estado", u.getEstado());
-            body.put("tipo", u.getTipo());
-            body.put("bio", u.getBio());
-            return Response.ok(body).build();
-        }
-        Object entity = resp.getEntity();
-        String msg = entity != null ? entity.toString() : "E-mail ou senha inválidos.";
-        return Response.status(resp.getStatus())
-                .entity(Map.of("erro", msg))
-                .build();
+        return usuarioBO.autenticar(dto);
     }
 
     @POST
@@ -81,28 +54,6 @@ public class LoginController {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response cadastrar(CadastroDTO dto) {
-        Response resp = usuarioBO.cadastrar(dto);
-        if (resp.getStatus() == 201) {
-            Usuario u = (Usuario) resp.getEntity();
-            try {
-                LogDTO log = new LogDTO("CADASTRO", "Novo usuário cadastrado",
-                        u.getNome() + " " + (u.getSobrenome() != null ? u.getSobrenome() : ""),
-                        u.getEmail(), "web");
-                logBO.registrar(log);
-            } catch (Exception ignored) {
-            }
-            Map<String, Object> body = new HashMap<>();
-            body.put("id", u.getId());
-            body.put("nome", u.getNome());
-            body.put("sobrenome", u.getSobrenome());
-            body.put("email", u.getEmail());
-            body.put("tipo", u.getTipo());
-            return Response.status(Response.Status.CREATED).entity(body).build();
-        }
-        Object entity = resp.getEntity();
-        String msg = entity != null ? entity.toString() : "Erro no cadastro.";
-        return Response.status(resp.getStatus())
-                .entity(Map.of("erro", msg))
-                .build();
+        return usuarioBO.cadastrar(dto);
     }
 }

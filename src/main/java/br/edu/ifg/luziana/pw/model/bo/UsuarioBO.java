@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.time.ZonedDateTime;
 
@@ -108,7 +109,7 @@ public class UsuarioBO {
                 .issuer("http://localhost/issuer")
                 .upn(u.getEmail())
                 .groups(u.getTipo())
-                .claim("nome", u.getNome())
+                .claim("id", u.getId())
                 .claim("data", ZonedDateTime.now().toString())
                 .sign();
 
@@ -120,7 +121,7 @@ public class UsuarioBO {
                 .httpOnly(true)
                 .build();
 
-        return Response.ok(u).header("Set-Cookie", cookie).build();
+        return Response.ok().header("Set-Cookie", cookie).build();
     }
 
     @Transactional
@@ -150,7 +151,7 @@ public class UsuarioBO {
                 .issuer("http://localhost/issuer")
                 .upn(entity.getEmail())
                 .groups(entity.getTipo())
-                .claim("nome", entity.getNome())
+                .claim("id", entity.getId())
                 .claim("data", ZonedDateTime.now().toString())
                 .sign();
 
@@ -162,6 +163,6 @@ public class UsuarioBO {
                 .httpOnly(true)
                 .build();
 
-        return Response.status(Response.Status.CREATED).entity(entity).header("Set-Cookie", cookie).build();
+        return Response.status(Response.Status.CREATED).header("Set-Cookie", cookie).build();
     }
 }

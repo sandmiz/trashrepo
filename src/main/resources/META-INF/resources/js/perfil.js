@@ -14,21 +14,18 @@ function preencherPerfil(p) {
 }
 
 // Mantém sessão e perfil local iguais ao que está no banco
-function sincronizarSessao(dados) {
-  const atual = getUsuarioLogado() || {};
+async function sincronizarSessao(dados) {
+  const atual = await getPerfil() || {};
   const nova = { ...atual, ...dados };
   localStorage.setItem('automarket_session', JSON.stringify(nova));
   setPerfil(nova);
 }
 
-function carregarPerfil() {
-  preencherPerfil(getPerfil());
+async function carregarPerfil() {
+  preencherPerfil(await getPerfil());
   atualizarSidebar();
 
-  const user = getUsuarioLogado();
-  if (!user || user.id == null) return;
-
-  fetch(`/perfil/buscar?id=${encodeURIComponent(user.id)}`)
+  fetch(`/perfil/info`)
     .then(r => (r.ok ? r.json() : null))
     .then(p => {
       if (!p) return;
